@@ -61,15 +61,15 @@ public class Main {
 			preparedStmt = con.prepareStatement(sql);
 
 			ResultSet rs = preparedStmt.executeQuery();
-			HTMLCrawler html=new HTMLCrawler();
+			HTMLCrawler html = new HTMLCrawler();
 			while (rs.next()) {
 				if (rs.getString(7).equals("S")) {
-					
-					html.crawleBySelenium (rs.getString(2), rs.getString(1), rs.getInt(5),
-							rs.getString(3), rs.getString(4), rs.getString(6));
-				} else {
-					html.crawleByJsoup(rs.getString(2), rs.getString(1), rs.getInt(5), rs.getString(3),
+
+					html.crawleBySelenium(rs.getString(2), rs.getString(1), rs.getInt(5), rs.getString(3),
 							rs.getString(4), rs.getString(6));
+				} else {
+					html.crawleByJsoup(rs.getString(2), rs.getString(1), rs.getInt(5), rs.getString(3), rs.getString(4),
+							rs.getString(6));
 				}
 
 			}
@@ -82,38 +82,42 @@ public class Main {
 	}
 
 	private static void readPDFFromDataSource() {
-//		PreparedStatement preparedStmt = null;
-//		try {
-//
-//			String sql = "select WVB_NUMBER , PARNT_URL , KEYWORDS ,DOMAIN, COMPANY_PERM_ID ,DATEWITHTITLE,CRAWLER from PR_CONFIG where CONFIGER=1 and STATUS ='true' and CONTENTTYPE='pdf'";
-//			try {
-//				if (con == null || con.isClosed()) {
-//					con = ConnectionManager.connectDataBase();
-//				}
-//			} catch (Exception e) {
-//				logger.error("Error", e);
-//				System.out.println(e);
-//			}
-//
-//			preparedStmt = con.prepareStatement(sql);
-//
-//			ResultSet rs = preparedStmt.executeQuery();
-//			while (rs.next()) {
-//				if (rs.getString(7).equals("S")) {
-//					PDFCrawlerBySelenium.getArticalsSelenium(rs.getString(2), rs.getString(1), rs.getInt(5),
-//							rs.getString(3), rs.getString(4), rs.getString(6));
-//				} else {
-//					PDFCrawler.getArticals(rs.getString(2), rs.getString(1), rs.getInt(5), rs.getString(3),
-//							rs.getString(4), rs.getString(6));
-//				}
-//
-//				// break;
-//			}
-//
-//		} catch (SQLException ex) {
-//			ex.printStackTrace();
-//
-//		}
+		// PreparedStatement preparedStmt = null;
+		// try {
+		//
+		// String sql = "select WVB_NUMBER , PARNT_URL , KEYWORDS ,DOMAIN,
+		// COMPANY_PERM_ID ,DATEWITHTITLE,CRAWLER from PR_CONFIG where CONFIGER=1 and
+		// STATUS ='true' and CONTENTTYPE='pdf'";
+		// try {
+		// if (con == null || con.isClosed()) {
+		// con = ConnectionManager.connectDataBase();
+		// }
+		// } catch (Exception e) {
+		// logger.error("Error", e);
+		// System.out.println(e);
+		// }
+		//
+		// preparedStmt = con.prepareStatement(sql);
+		//
+		// ResultSet rs = preparedStmt.executeQuery();
+		// while (rs.next()) {
+		// if (rs.getString(7).equals("S")) {
+		// PDFCrawlerBySelenium.getArticalsSelenium(rs.getString(2), rs.getString(1),
+		// rs.getInt(5),
+		// rs.getString(3), rs.getString(4), rs.getString(6));
+		// } else {
+		// PDFCrawler.getArticals(rs.getString(2), rs.getString(1), rs.getInt(5),
+		// rs.getString(3),
+		// rs.getString(4), rs.getString(6));
+		// }
+		//
+		// // break;
+		// }
+		//
+		// } catch (SQLException ex) {
+		// ex.printStackTrace();
+		//
+		// }
 
 	}
 }

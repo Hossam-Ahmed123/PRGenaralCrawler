@@ -14,82 +14,79 @@ import java.sql.Date;
  */
 public class DataModel {
 
-    private String discription;
-    private String newsTitle;
-    private String dataSheetUrl;
-    private int wvbNumber;
-    private int companyId;
-    private java.sql.Date date;
-    private String parentUrl;
-    private String offlinePath;
-    private int newsId;
+	private String discription;
+	private String newsTitle;
+	private String dataSheetUrl;
+	private int wvbNumber;
+	private int companyId;
+	private java.sql.Date date;
+	private String parentUrl;
+	private String offlinePath;
+	private int newsId;
 
-    public String getDiscription() {
-        return discription;
-    }
+	public String getDiscription() {
+		return discription;
+	}
 
-    public void setDiscription(String discription) {
-        this.discription = discription;
-    }
+	public void setDiscription(String discription) {
+		this.discription = discription;
+	}
 
-    public String getNewsTitle() {
-        return newsTitle;
-    }
+	public String getNewsTitle() {
+		return newsTitle;
+	}
 
-    public void setNewsTitle(String newsTitle) {
-        this.newsTitle = newsTitle;
-    }
+	public void setNewsTitle(String newsTitle) {
+		this.newsTitle = newsTitle;
+	}
 
-    public String getDataSheetUrl() {
-        return dataSheetUrl;
-    }
+	public String getDataSheetUrl() {
+		return dataSheetUrl;
+	}
 
-    public void setDataSheetUrl(String dataSheetUrl) {
-        this.dataSheetUrl = dataSheetUrl;
-    }
+	public void setDataSheetUrl(String dataSheetUrl) {
+		this.dataSheetUrl = dataSheetUrl;
+	}
 
-    public int getCompanyId() {
-        return companyId;
-    }
+	public int getCompanyId() {
+		return companyId;
+	}
 
-    public void setCompanyId(int companyId) {
-        this.companyId = companyId;
-    }
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
+	}
 
-     
-    public Date getDate() {
-        return date;
-    }
+	public Date getDate() {
+		return date;
+	}
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
- 
+	public String getParentUrl() {
+		return parentUrl;
+	}
 
-    public String getParentUrl() {
-        return parentUrl;
-    }
+	public void setParentUrl(String parentUrl) {
+		this.parentUrl = parentUrl;
+	}
 
-    public void setParentUrl(String parentUrl) {
-        this.parentUrl = parentUrl;
-    }
+	public int getNewsId() {
+		return newsId;
+	}
 
-    public int getNewsId() {
-        return newsId;
-    }
+	public void setNewsId(int newsId) {
+		this.newsId = newsId;
+	}
 
-    public void setNewsId(int newsId) {
-        this.newsId = newsId;
-    }
+	public int getWvbNumber() {
+		return wvbNumber;
+	}
 
-    public int getWvbNumber() {
-        return wvbNumber;
-    }
-
-    public void setWvbNumber(int wvbNumber) {
-        this.wvbNumber = wvbNumber;
-    }
+	public void setWvbNumber(int wvbNumber) {
+		this.wvbNumber = wvbNumber;
+	}
 
 	public String getOfflinePath() {
 		return offlinePath;
@@ -99,7 +96,4 @@ public class DataModel {
 		this.offlinePath = offlinePath;
 	}
 
-    
-    
-    
 }

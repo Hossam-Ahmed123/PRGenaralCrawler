@@ -144,14 +144,13 @@ public class DAO {
 				System.out.println("Error" + e);
 			}
 			PreparedStatement ps = con.prepareStatement(query);
-			
 
 			ps.clearBatch();
 			InputStream is1 = null;
-			int x= 0 ;
+			int x = 0;
 			for (DataModel dm : mySet) {
-//while ( dm.getDataSheetUrl() not in )
-				//ps.
+				// while ( dm.getDataSheetUrl() not in )
+				// ps.
 				String pRContent = dm.getDiscription();
 				if (pRContent != null) {
 					is1 = new ByteArrayInputStream(dm.getDiscription().getBytes(StandardCharsets.UTF_8.name()));
@@ -174,7 +173,7 @@ public class DAO {
 				ps.setString(8, dm.getNewsTitle());
 				ps.setInt(9, dm.getCompanyId());
 				ps.setString(10, dm.getDataSheetUrl());
-			
+
 				ps.addBatch();
 				System.out.println(dm.getNewsTitle() + "\t" + dm.getDate() + "\t" + dm.getCompanyId() + "\t"
 						+ dm.getDataSheetUrl());
@@ -192,51 +191,44 @@ public class DAO {
 			System.out.println(e);
 		}
 	}
-	
-	
-    public static void addToDb2(Set<DataModel> mySet) {
-        /* insert data to database */
-        try {
 
-            String query = "insert into NEWS (NEWSID , "
-                    + "NEWSBODY,"
-                    + "NEWSTITLE,"
-                    + "NEWSCATGID,"
-                    + "WHOCREATED,"
-                    + "DTCREATED,"
-                    + "COMPNYID,"
-                    + "PUBLISHDATE,NEWSURL,ATTCHMENT,BYGENERALCRAWLER ) "
-                    + " select  NEWSSEQ.nextval , ? , ? ,?,'wvb',sysdate, ? , ?, ? , ? , 1 from dual "
-                    + " where not exists ( select * from NEWS WHERE PUBLISHDATE = ? and NEWSTITLE=? and COMPNYID=? and NEWSURL=? ) ";
-            System.out.println("start query " + query);
-            PreparedStatement ps = con.prepareStatement(query);
-            for (DataModel dm : mySet) {
+	public static void addToDb2(Set<DataModel> mySet) {
+		/* insert data to database */
+		try {
 
-                try {
-                    File blob = new File(dm.getOfflinePath());
-                    FileInputStream in = new FileInputStream(blob);
-                    ps.setString(1, dm.getDiscription());
-                    ps.setString(2, dm.getNewsTitle());
-                    ps.setInt(3, dm.getNewsId());
-                    ps.setInt(4, dm.getCompanyId());
-                    ps.setDate(5, dm.getDate());
-                    ps.setString(6, dm.getDataSheetUrl());
-                    ps.setBlob(7, in);
-                    ps.setDate(8, dm.getDate());
+			String query = "insert into NEWS (NEWSID , " + "NEWSBODY," + "NEWSTITLE," + "NEWSCATGID," + "WHOCREATED,"
+					+ "DTCREATED," + "COMPNYID," + "PUBLISHDATE,NEWSURL,ATTCHMENT,BYGENERALCRAWLER ) "
+					+ " select  NEWSSEQ.nextval , ? , ? ,?,'wvb',sysdate, ? , ?, ? , ? , 1 from dual "
+					+ " where not exists ( select * from NEWS WHERE PUBLISHDATE = ? and NEWSTITLE=? and COMPNYID=? and NEWSURL=? ) ";
+			System.out.println("start query " + query);
+			PreparedStatement ps = con.prepareStatement(query);
+			for (DataModel dm : mySet) {
 
-                    ps.setString(9, dm.getNewsTitle());
-                    ps.setInt(10, dm.getCompanyId());
-                    ps.setString(11, dm.getDataSheetUrl());
-                    ps.addBatch();
-                } catch (Exception e) {
+				try {
+					File blob = new File(dm.getOfflinePath());
+					FileInputStream in = new FileInputStream(blob);
+					ps.setString(1, dm.getDiscription());
+					ps.setString(2, dm.getNewsTitle());
+					ps.setInt(3, dm.getNewsId());
+					ps.setInt(4, dm.getCompanyId());
+					ps.setDate(5, dm.getDate());
+					ps.setString(6, dm.getDataSheetUrl());
+					ps.setBlob(7, in);
+					ps.setDate(8, dm.getDate());
 
-                }
+					ps.setString(9, dm.getNewsTitle());
+					ps.setInt(10, dm.getCompanyId());
+					ps.setString(11, dm.getDataSheetUrl());
+					ps.addBatch();
+				} catch (Exception e) {
 
-            }
-            ps.executeBatch();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-	
+				}
+
+			}
+			ps.executeBatch();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }

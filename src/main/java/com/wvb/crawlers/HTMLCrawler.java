@@ -22,7 +22,7 @@ import com.wvb.dto.DAO;
 import com.wvb.engine.FixDate;
 import com.wvb.factory.ParentCrawler;
 import com.wvb.model.DataModel;
- 
+
 public class HTMLCrawler implements ParentCrawler {
 
 	static org.slf4j.Logger logger = LoggerFactory.getLogger(HTMLCrawler.class);
