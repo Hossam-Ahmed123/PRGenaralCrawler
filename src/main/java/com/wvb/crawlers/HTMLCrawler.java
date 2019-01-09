@@ -31,7 +31,7 @@ public class HTMLCrawler implements ParentCrawler {
 
 	@Override
 	public void crawleBySelenium(String url, String companyCode, int companyPermId, String keyWord, String domainFromDB,
-			String dateWithTitle) {
+			String dateWithTitle, String titleFromChildPage) {
 
 		Map<String, String> numberMapping = new HashMap<>();
 		modelSelenium = new ArrayList<DataModel>();
@@ -95,7 +95,8 @@ public class HTMLCrawler implements ParentCrawler {
 				e.printStackTrace();
 
 			}
-			getDataSelenium(companyCode, url, companyPermId, dateWithTitle, companyID, numberMapping);
+			getDataSelenium(companyCode, url, companyPermId, dateWithTitle, companyID, numberMapping,
+					titleFromChildPage);
 			Set<DataModel> mySet = new HashSet<DataModel>(modelSelenium);
 			DAO.addToDb(mySet);
 
@@ -110,7 +111,7 @@ public class HTMLCrawler implements ParentCrawler {
 	}
 
 	private void getDataSelenium(String companyCode, String parentUrl, int companyPermId, String dateWithTitle,
-			int companyID, Map<String, String> numberMapping) {
+			int companyID, Map<String, String> numberMapping, String titleFromChildPage) {
 		Iterator iterator = numberMapping.entrySet().iterator();
 		String date = "";
 		String content = "";
@@ -127,7 +128,7 @@ public class HTMLCrawler implements ParentCrawler {
 				if (title.equals("Read more") || title.equals("") || title.equals("more")
 						|| title.equals("Read More")) {
 
-					title = document.getElementsByTag("h1").text();
+					title = document.getElementsByTag(titleFromChildPage).text();
 
 				}
 
@@ -177,7 +178,7 @@ public class HTMLCrawler implements ParentCrawler {
 
 	@Override
 	public void crawleByJsoup(String url, String companyCode, int companyPermId, String keyWord, String domainFromDB,
-			String dateWithTitle) {
+			String dateWithTitle, String titleFromChildPage) {
 		Map<String, String> numberMapping = new HashMap<>();
 		modelJsoup = new ArrayList<DataModel>();
 		logger.info("companyPermId --===========---|> " + companyPermId);
@@ -240,7 +241,7 @@ public class HTMLCrawler implements ParentCrawler {
 				e.printStackTrace();
 
 			}
-			getDataJsoup(companyCode, url, companyPermId, dateWithTitle, companyID, numberMapping);
+			getDataJsoup(companyCode, url, companyPermId, dateWithTitle, companyID, numberMapping, titleFromChildPage);
 			Set<DataModel> mySet = new HashSet<DataModel>(modelJsoup);
 
 			DAO.addToDb(mySet);
@@ -257,7 +258,7 @@ public class HTMLCrawler implements ParentCrawler {
 	}
 
 	private static void getDataJsoup(String companyCode, String parentUrl, int companyPermID, String dateWithTitle,
-			int companyId, Map<String, String> numberMapping) {
+			int companyId, Map<String, String> numberMapping, String titleFromChildPage) {
 		Iterator iterator = numberMapping.entrySet().iterator();
 		String date = "";
 		String content = "";
@@ -275,7 +276,7 @@ public class HTMLCrawler implements ParentCrawler {
 				if (title.equals("Read more") || title.equals("") || title.equals("more")
 						|| title.equals("Read More")) {
 
-					title = document.getElementsByTag("h2").text();
+					title = document.getElementsByTag(titleFromChildPage).text();
 
 				}
 
@@ -311,13 +312,17 @@ public class HTMLCrawler implements ParentCrawler {
 						dm.setDate(newDate);
 					} else {
 						String genrateDate = ExctrctDates.getDate(content, 1);
-
-						newDate = FixDate.getDate(genrateDate);
-
-						logger.info("genrateDate ----------------------- ===============> " + genrateDate);
+						System.out.println("genrateDate ----------------------- ===============> " + genrateDate);
 						logger.info("newDate ----------------------- ===============> " + newDate);
+						if (!(genrateDate.equals("not found"))) {
 
-						dm.setDate(newDate);
+							newDate = FixDate.getDate(genrateDate);
+
+							Thread.sleep(5);
+
+							dm.setDate(newDate);
+						}
+
 					}
 
 					modelJsoup.add(dm);

@@ -9,21 +9,25 @@ package com.wvb.engine;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  *
  * @author AL-ME3RAJ
  */
 public class FixDate {
+ 
 
 	public static java.sql.Date getDate(String date) {
+		System.out.println(date);
 		java.util.Date d = null;
 		java.sql.Date sqlDate = null;
 		try {
 			java.util.Date myDate = new java.util.Date(convertDate(date));
 			sqlDate = new java.sql.Date(myDate.getTime());
 		} catch (Exception e) {
-			// TODO: handle exception
+			sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+			e.printStackTrace();
 		}
 
 		return sqlDate;

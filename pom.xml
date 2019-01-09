@@ -1,9 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>PRGenaralCrawlerMaster</groupId>
-  <artifactId>PRGenaralCrawlerMaster</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>PRGenaralCrawlerMaster</groupId>
+	<artifactId>PRGenaralCrawlerMaster</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<dependencies>
 
 		<dependency>
 			<groupId>org.seleniumhq.selenium.fluent</groupId>
@@ -11,7 +13,11 @@
 			<version>1.14.2</version>
 			<type>jar</type>
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>2.0.6</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.jsoup</groupId>
@@ -39,14 +45,8 @@
 			<artifactId>natty</artifactId>
 			<version>0.13</version>
 		</dependency>
-		<!-- 
-		
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.21</version>
-		</dependency>
--->
+		<!-- <dependency> <groupId>org.slf4j</groupId> <artifactId>slf4j-log4j12</artifactId> 
+			<version>1.7.21</version> </dependency> -->
 	</dependencies>
 	<name>PRGenaralCrawlerMaster</name>
 </project>

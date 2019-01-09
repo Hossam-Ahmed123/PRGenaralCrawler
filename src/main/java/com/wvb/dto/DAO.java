@@ -159,7 +159,7 @@ public class DAO {
 				ps.setString(2, dm.getNewsTitle());
 				ps.setInt(3, dm.getNewsId());
 				ps.setInt(4, dm.getCompanyId());
-				if (dm.getDate() == null || dm.getDate().equals("")) {
+				if (dm.getDate() == null || dm.getDate().equals("null") || dm.getDate().equals("")) {
 					ps.setDate(5, FixDate.getDate(java.time.LocalDate.now().toString()));
 					ps.setDate(7, FixDate.getDate(java.time.LocalDate.now().toString()));
 				} else {
@@ -203,15 +203,21 @@ public class DAO {
 			System.out.println("start query " + query);
 			PreparedStatement ps = con.prepareStatement(query);
 			for (DataModel dm : mySet) {
-
 				try {
+					
 					File blob = new File(dm.getOfflinePath());
 					FileInputStream in = new FileInputStream(blob);
-					ps.setString(1, dm.getDiscription());
+					ps.setString(1, dm.getNewsTitle());
 					ps.setString(2, dm.getNewsTitle());
 					ps.setInt(3, dm.getNewsId());
 					ps.setInt(4, dm.getCompanyId());
-					ps.setDate(5, dm.getDate());
+					if (dm.getDate() == null || dm.getDate().equals("null") || dm.getDate().equals("") ) {
+						ps.setDate(5, FixDate.getDate(java.time.LocalDate.now().toString()));
+ 					} else {
+
+						ps.setDate(5, dm.getDate());
+						 
+					}
 					ps.setString(6, dm.getDataSheetUrl());
 					ps.setBlob(7, in);
 					ps.setDate(8, dm.getDate());
@@ -220,12 +226,22 @@ public class DAO {
 					ps.setInt(10, dm.getCompanyId());
 					ps.setString(11, dm.getDataSheetUrl());
 					ps.addBatch();
+					System.out.println(dm.getNewsTitle() + "\t" + dm.getDate() + "\t" + dm.getCompanyId() + "\t"
+							+ dm.getDataSheetUrl());
 				} catch (Exception e) {
+					e.printStackTrace();
 
 				}
 
 			}
-			ps.executeBatch();
+			int[] arr = ps.executeBatch();
+
+			logger.info("Done Insert ============= " + arr.length);
+			System.out.println("Done Insert ============= " + arr.length);
+			if (arr.length > 0) {
+				logger.info("Done Insert ============= " + arr.length);
+				System.out.println("Done Insert ============= " + arr.length);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
