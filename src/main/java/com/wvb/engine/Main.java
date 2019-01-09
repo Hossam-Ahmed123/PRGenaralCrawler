@@ -43,15 +43,15 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws Exception {
-		// readHtmlFromDataSource();
-		readPDFFromDataSource();
+		 readHtmlFromDataSource();
+//		readPDFFromDataSource();
 	}
 
 	private static void readHtmlFromDataSource() {
 		PreparedStatement preparedStmt = null;
 		try {
 
-			String sql = "select WVB_NUMBER , PARNT_URL , KEYWORDS ,DOMAIN, COMPANY_PERM_ID ,DATEWITHTITLE,CRAWLER ,WHENNOTFOUNDTITLE  from PR_CONFIG where CONFIGER=1 and STATUS ='true' and CONTENTTYPE='html' and COMPANY_PERM_ID =30552 ";
+			String sql = "select WVB_NUMBER , PARNT_URL , KEYWORDS ,DOMAIN, COMPANY_PERM_ID ,DATEWITHTITLE,CRAWLER ,WHENNOTFOUNDTITLE  from PR_CONFIG where CONFIGER=1 and STATUS ='true' and CONTENTTYPE='html' and WHENNOTFOUNDTITLE like '%h%' and COMPANY_PERM_ID=1030821 ";
 			try {
 				if (con == null || con.isClosed()) {
 					con = ConnectionManager.connectDataBase();
@@ -66,6 +66,7 @@ public class Main {
 			ResultSet rs = preparedStmt.executeQuery();
 			crawler = new HTMLCrawler();
 			while (rs.next()) {
+				System.out.println("Company Perm id "+rs.getString(5) );
 				if (rs.getString(7).equals("S")) {
 
 					crawler.crawleBySelenium(rs.getString(2), rs.getString(1),
