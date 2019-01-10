@@ -17,9 +17,11 @@ import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.LoggerFactory;
+
+import com.wvb.apis.ExctrctDates;
+import com.wvb.apis.FixDate;
 import com.wvb.connection.GetDocumentJsoup;
 import com.wvb.dto.DAO;
-import com.wvb.engine.FixDate;
 import com.wvb.factory.ParentCrawler;
 import com.wvb.model.DataModel;
 
@@ -30,7 +32,8 @@ public class HTMLCrawler implements ParentCrawler {
 	static ArrayList<DataModel> modelSelenium;
 
 	@Override
-	public void crawleBySelenium(String url, String companyCode, int companyPermId, String keyWord, String domainFromDB,
+	public void crawleBySelenium(String url, String companyCode,
+			int companyPermId, String keyWord, String domainFromDB,
 			String dateWithTitle, String titleFromChildPage) {
 
 		Map<String, String> numberMapping = new HashMap<>();
@@ -42,7 +45,8 @@ public class HTMLCrawler implements ParentCrawler {
 			String date = "";
 
 			URI uri = new URI(url);
-			System.setProperty("webdriver.chrome.driver", "E:\\lib\\chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver",
+					"E:\\lib\\chromedriver.exe");
 			WebDriver driver = new ChromeDriver();
 			driver.get(url);
 			try {
@@ -72,17 +76,23 @@ public class HTMLCrawler implements ParentCrawler {
 						System.out.println("child URL 00===> " + relHref);
 
 						System.out.println(x0);
-						if (!relHref.startsWith("http") && !relHref.startsWith("https") && !relHref.startsWith("www")
-								&& !relHref.startsWith("Http") && !relHref.startsWith("https")) {
-							if (relHref.contains("../../")) {
-								relHref = relHref.replace("../..", "");
+						if (!relHref.endsWith(".pdf")
+								&& !relHref.endsWith(".jpg")) {
+							if (!relHref.startsWith("http")
+									&& !relHref.startsWith("https")
+									&& !relHref.startsWith("www")
+									&& !relHref.startsWith("Http")
+									&& !relHref.startsWith("https")) {
+								if (relHref.contains("../../")) {
+									relHref = relHref.replace("../..", "");
+								}
+
+								relHref = domainFromDB + relHref;
+								numberMapping.put(relHref, title);
+							} else {
+								numberMapping.put(relHref, title);
+
 							}
-
-							relHref = domainFromDB + relHref;
-							numberMapping.put(relHref, title);
-						} else {
-							numberMapping.put(relHref, title);
-
 						}
 
 					}
@@ -95,8 +105,8 @@ public class HTMLCrawler implements ParentCrawler {
 				e.printStackTrace();
 
 			}
-			getDataSelenium(companyCode, url, companyPermId, dateWithTitle, companyID, numberMapping,
-					titleFromChildPage);
+			getDataSelenium(companyCode, url, companyPermId, dateWithTitle,
+					companyID, numberMapping, titleFromChildPage);
 			Set<DataModel> mySet = new HashSet<DataModel>(modelSelenium);
 			DAO.addToDb(mySet);
 
@@ -110,26 +120,32 @@ public class HTMLCrawler implements ParentCrawler {
 
 	}
 
-	private void getDataSelenium(String companyCode, String parentUrl, int companyPermId, String dateWithTitle,
-			int companyID, Map<String, String> numberMapping, String titleFromChildPage) {
+	private void getDataSelenium(String companyCode, String parentUrl,
+			int companyPermId, String dateWithTitle, int companyID,
+			Map<String, String> numberMapping, String titleFromChildPage) {
 		Iterator iterator = numberMapping.entrySet().iterator();
 		String date = "";
 		String content = "";
 		String url = "";
 		String title = " ";
+		int x=0;
 		while (iterator.hasNext()) {
 			Map.Entry me2 = (Map.Entry) iterator.next();
-			System.out.println("Key: " + me2.getKey() + " & Value: " + me2.getValue());
+			
 			url = me2.getKey().toString();
 			title = me2.getValue().toString();
 			try {
 				GetDocumentJsoup gdj = new GetDocumentJsoup();
 				Document document = gdj.getDocument(url);
-				if (title.equals("Read more") || title.equals("") || title.equals("more")
-						|| title.equals("Read More")) {
+				
+				if (title.equals("Read more") || title.equals("")
+						|| title.equals("more") || title.equals("Read more..")|| title.equals("Read More")
+						|| title.equals("more...")) {
 
-					title = document.getElementsByTag(titleFromChildPage).text();
-
+					Elements titlex = document.getElementsByTag(titleFromChildPage);
+					title=titlex.get(x).text();
+					x++;
+					System.out.println("child URL 00===> " + title);
 				}
 
 				try {
@@ -177,8 +193,9 @@ public class HTMLCrawler implements ParentCrawler {
 	}
 
 	@Override
-	public void crawleByJsoup(String url, String companyCode, int companyPermId, String keyWord, String domainFromDB,
-			String dateWithTitle, String titleFromChildPage) {
+	public void crawleByJsoup(String url, String companyCode, int companyPermId,
+			String keyWord, String domainFromDB, String dateWithTitle,
+			String titleFromChildPage) {
 		Map<String, String> numberMapping = new HashMap<>();
 		modelJsoup = new ArrayList<DataModel>();
 		logger.info("companyPermId --===========---|> " + companyPermId);
@@ -217,8 +234,10 @@ public class HTMLCrawler implements ParentCrawler {
 						if (relHref.contains(keyWord)) {
 
 							System.out.println(x0);
-							if (!relHref.startsWith("http") && !relHref.startsWith("https")
-									&& !relHref.startsWith("www") && !relHref.startsWith("Http")
+							if (!relHref.startsWith("http")
+									&& !relHref.startsWith("https")
+									&& !relHref.startsWith("www")
+									&& !relHref.startsWith("Http")
 									&& !relHref.startsWith("https")) {
 								if (relHref.contains("../../")) {
 									relHref = relHref.replace("../..", "");
@@ -241,7 +260,8 @@ public class HTMLCrawler implements ParentCrawler {
 				e.printStackTrace();
 
 			}
-			getDataJsoup(companyCode, url, companyPermId, dateWithTitle, companyID, numberMapping, titleFromChildPage);
+			getDataJsoup(companyCode, url, companyPermId, dateWithTitle,
+					companyID, numberMapping, titleFromChildPage);
 			Set<DataModel> mySet = new HashSet<DataModel>(modelJsoup);
 
 			DAO.addToDb(mySet);
@@ -257,8 +277,9 @@ public class HTMLCrawler implements ParentCrawler {
 
 	}
 
-	private static void getDataJsoup(String companyCode, String parentUrl, int companyPermID, String dateWithTitle,
-			int companyId, Map<String, String> numberMapping, String titleFromChildPage) {
+	private static void getDataJsoup(String companyCode, String parentUrl,
+			int companyPermID, String dateWithTitle, int companyId,
+			Map<String, String> numberMapping, String titleFromChildPage) {
 		Iterator iterator = numberMapping.entrySet().iterator();
 		String date = "";
 		String content = "";
@@ -266,17 +287,19 @@ public class HTMLCrawler implements ParentCrawler {
 		String title = " ";
 		while (iterator.hasNext()) {
 			Map.Entry me2 = (Map.Entry) iterator.next();
-			System.out.println("Key: " + me2.getKey() + " & Value: " + me2.getValue());
+			System.out.println(
+					"Key: " + me2.getKey() + " & Value: " + me2.getValue());
 			url = me2.getKey().toString();
 			title = me2.getValue().toString();
 			try {
 				GetDocumentJsoup gdj = new GetDocumentJsoup();
 				Document document = gdj.getDocument(url);
 				System.out.println("Title =====================> " + title);
-				if (title.equals("Read more") || title.equals("") || title.equals("more")
-						|| title.equals("Read More")) {
+				if (title.equals("Read more") || title.equals("")
+						|| title.equals("more") || title.equals("Read more..")|| title.equals("Read More")
+						|| title.equals("more...")) {
 
-					title = document.getElementsByTag(titleFromChildPage).text();
+					title = document.getElementsByTag(titleFromChildPage) .text();
 
 				}
 
@@ -303,17 +326,23 @@ public class HTMLCrawler implements ParentCrawler {
 					dm.setNewsId(13);
 					dm.setCompanyId(companyId);
 					java.sql.Date newDate = null;
-					System.out.println("date With title ======>     " + dateWithTitle);
+					System.out.println(
+							"date With title ======>     " + dateWithTitle);
 					if (dateWithTitle.equals("1")) {
 						String datex = ExctrctDates.getDate(title, 1);
-						System.out.println("datexxxxx =====================> " + datex);
+						System.out.println(
+								"datexxxxx =====================> " + datex);
 						newDate = FixDate.getDate(datex);
 
 						dm.setDate(newDate);
 					} else {
 						String genrateDate = ExctrctDates.getDate(content, 1);
-						System.out.println("genrateDate ----------------------- ===============> " + genrateDate);
-						logger.info("newDate ----------------------- ===============> " + newDate);
+						System.out.println(
+								"genrateDate ----------------------- ===============> "
+										+ genrateDate);
+						logger.info(
+								"newDate ----------------------- ===============> "
+										+ newDate);
 						if (!(genrateDate.equals("not found"))) {
 
 							newDate = FixDate.getDate(genrateDate);

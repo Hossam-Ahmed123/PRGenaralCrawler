@@ -1,11 +1,10 @@
-package com.wvb.crawlers;
+package com.wvb.apis;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
-import com.wvb.engine.FixDate;
 
 public class ExctrctDates {
 	public static String getDate(String content, int xx) {
@@ -21,13 +20,11 @@ public class ExctrctDates {
 				System.out.println(d.getDates());
 
 				String xdate = "" + d.getDates().get(0);
-				if (!xdate.contains("2019") && p.parse(content).size() > 1) {
+				if (xdate.contains("2018") || xdate.contains("2015") || xdate.contains("2016")
+						|| xdate.contains("2017")) {
 					date = xdate;
+					break;
 				}
-				if (x == xx) {
-					date = xdate;
-				}
-				x++;
 
 			}
 			String datex = genrateDate(date);

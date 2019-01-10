@@ -5,8 +5,8 @@
  */
 package com.wvb.dto;
 
+import com.wvb.apis.FixDate;
 import com.wvb.connection.ConnectionManager;
-import com.wvb.engine.FixDate;
 import com.wvb.model.DataModel;
 import java.io.ByteArrayInputStream;
 import java.io.File;

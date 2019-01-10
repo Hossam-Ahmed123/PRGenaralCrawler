@@ -10,6 +10,7 @@ package com.wvb.engine;
 import com.wvb.connection.ConnectionManager;
 import com.wvb.crawlers.HTMLCrawler;
 import com.wvb.crawlers.PDFCrawler;
+import com.wvb.factory.CrawlerFactory;
 import com.wvb.factory.ParentCrawler;
 
 import java.sql.Connection;
@@ -43,15 +44,16 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws Exception {
-		 readHtmlFromDataSource();
-//		readPDFFromDataSource();
+		CrawlerFactory crawlerFactory=new CrawlerFactory();
+		 readHtmlFromDataSource(crawlerFactory);
+		readPDFFromDataSource(crawlerFactory);
 	}
 
-	private static void readHtmlFromDataSource() {
+	private static void readHtmlFromDataSource(CrawlerFactory factory) {
 		PreparedStatement preparedStmt = null;
 		try {
 
-			String sql = "select WVB_NUMBER , PARNT_URL , KEYWORDS ,DOMAIN, COMPANY_PERM_ID ,DATEWITHTITLE,CRAWLER ,WHENNOTFOUNDTITLE  from PR_CONFIG where CONFIGER=1 and STATUS ='true' and CONTENTTYPE='html' and WHENNOTFOUNDTITLE like '%h%' and COMPANY_PERM_ID=1030821 ";
+			String sql = "select WVB_NUMBER , PARNT_URL , KEYWORDS ,DOMAIN, COMPANY_PERM_ID ,DATEWITHTITLE,CRAWLER ,WHENNOTFOUNDTITLE  from PR_CONFIG where CONFIGER=1 and STATUS ='true' and CONTENTTYPE='html' and WHENNOTFOUNDTITLE like '%h%' and COMPANY_PERM_ID=1676545 ";
 			try {
 				if (con == null || con.isClosed()) {
 					con = ConnectionManager.connectDataBase();
@@ -64,7 +66,7 @@ public class Main {
 			preparedStmt = con.prepareStatement(sql);
 
 			ResultSet rs = preparedStmt.executeQuery();
-			crawler = new HTMLCrawler();
+			crawler = factory.getCrawler("HTML");
 			while (rs.next()) {
 				System.out.println("Company Perm id "+rs.getString(5) );
 				if (rs.getString(7).equals("S")) {
@@ -87,7 +89,7 @@ public class Main {
 
 	}
 
-	private static void readPDFFromDataSource() {
+	private static void readPDFFromDataSource(CrawlerFactory factory) {
 		PreparedStatement preparedStmt = null;
 		try {
 
@@ -104,7 +106,7 @@ public class Main {
 			preparedStmt = con.prepareStatement(sql);
 
 			ResultSet rs = preparedStmt.executeQuery();
-			crawler = new PDFCrawler();
+			crawler = factory.getCrawler("PDF");
 			while (rs.next()) {
 				if (rs.getString(7).equals("S")) {
 					crawler.crawleBySelenium(rs.getString(2), rs.getString(1),
