@@ -11,9 +11,11 @@ public class CrawlerFactory {
 			return null;
 		}
 		if (crawlerType.equalsIgnoreCase("HTML")) {
+			System.out.println("Read From Html Page");
 			return new HTMLCrawler();
 
 		} else if (crawlerType.equalsIgnoreCase("PDF")) {
+			System.out.println("Read From PDF Page");
 			return new PDFCrawler();
 
 		} else if (crawlerType.equalsIgnoreCase("OCR")) {

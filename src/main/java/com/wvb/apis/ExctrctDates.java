@@ -16,16 +16,24 @@ public class ExctrctDates {
 			int x = 0;
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 			LocalDateTime now = LocalDateTime.now();
+
 			for (DateGroup d : p.parse(content)) {
 				System.out.println(d.getDates());
 
 				String xdate = "" + d.getDates().get(0);
-				if (xdate.contains("2018") || xdate.contains("2015") || xdate.contains("2016")
+				if (xdate.contains("2018") || xdate.contains("2015")
+						|| xdate.contains("2012") || xdate.contains("2011")
+						|| xdate.contains("2010") || xdate.contains("2013")
+						|| xdate.contains("2014") || xdate.contains("2016")
 						|| xdate.contains("2017")) {
 					date = xdate;
 					break;
+				} else {
+					if (x == 2) {
+						date = xdate;
+					}
 				}
-
+				x++;
 			}
 			String datex = genrateDate(date);
 			date = datex;

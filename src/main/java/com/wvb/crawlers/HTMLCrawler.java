@@ -35,7 +35,9 @@ public class HTMLCrawler implements ParentCrawler {
 	public void crawleBySelenium(String url, String companyCode,
 			int companyPermId, String keyWord, String domainFromDB,
 			String dateWithTitle, String titleFromChildPage) {
-
+		System.setProperty("webdriver.chrome.driver",
+				"E:\\lib\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
 		Map<String, String> numberMapping = new HashMap<>();
 		modelSelenium = new ArrayList<DataModel>();
 		int companyID = DAO.getCompanyID(companyPermId);
@@ -45,9 +47,7 @@ public class HTMLCrawler implements ParentCrawler {
 			String date = "";
 
 			URI uri = new URI(url);
-			System.setProperty("webdriver.chrome.driver",
-					"E:\\lib\\chromedriver.exe");
-			WebDriver driver = new ChromeDriver();
+			
 			driver.get(url);
 			try {
 				TimeUnit.SECONDS.sleep(5);
@@ -117,34 +117,39 @@ public class HTMLCrawler implements ParentCrawler {
 
 		modelSelenium = null;
 		System.gc();
+		driver.close();
+		
 
 	}
 
 	private void getDataSelenium(String companyCode, String parentUrl,
 			int companyPermId, String dateWithTitle, int companyID,
 			Map<String, String> numberMapping, String titleFromChildPage) {
+		System.setProperty("webdriver.chrome.driver",
+				"E:\\lib\\chromedriver.exe");
+		WebDriver driverx = new ChromeDriver();
 		Iterator iterator = numberMapping.entrySet().iterator();
 		String date = "";
 		String content = "";
 		String url = "";
 		String title = " ";
-		int x=0;
+		int x = 0;
 		while (iterator.hasNext()) {
 			Map.Entry me2 = (Map.Entry) iterator.next();
-			
+
 			url = me2.getKey().toString();
 			title = me2.getValue().toString();
 			try {
-				GetDocumentJsoup gdj = new GetDocumentJsoup();
-				Document document = gdj.getDocument(url);
-				
-				if (title.equals("Read more") || title.equals("")
-						|| title.equals("more") || title.equals("Read more..")|| title.equals("Read More")
-						|| title.equals("more...")) {
 
-					Elements titlex = document.getElementsByTag(titleFromChildPage);
-					title=titlex.get(x).text();
-					x++;
+				driverx.get(url);
+				Document document = Jsoup.parse(driverx.getPageSource());
+				if (title.equals("Read more") || title.equals("")
+						|| title.equals("more") || title.equals("Read more..")
+						|| title.equals("Read More") || title.equals("more...")
+						|| title.equals("READ MORE")) {
+					title = document.getElementsByTag(titleFromChildPage)
+							.text();
+
 					System.out.println("child URL 00===> " + title);
 				}
 
@@ -189,6 +194,7 @@ public class HTMLCrawler implements ParentCrawler {
 
 			}
 		}
+		driverx.close();
 
 	}
 
@@ -296,11 +302,13 @@ public class HTMLCrawler implements ParentCrawler {
 				Document document = gdj.getDocument(url);
 				System.out.println("Title =====================> " + title);
 				if (title.equals("Read more") || title.equals("")
-						|| title.equals("more") || title.equals("Read more..")|| title.equals("Read More")
-						|| title.equals("more...")) {
+						|| title.equals("more") || title.equals("Read more..")
+						|| title.equals("Read More") || title.equals("more...")
+						|| title.equals("READ MORE")) {
+					title = document.getElementsByTag(titleFromChildPage)
+							.text();
 
-					title = document.getElementsByTag(titleFromChildPage) .text();
-
+					System.out.println("child URL 00===> " + title);
 				}
 
 				try {
