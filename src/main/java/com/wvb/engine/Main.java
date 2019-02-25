@@ -48,7 +48,7 @@ public class Main {
 		PreparedStatement preparedStmt = null;
 		try {
 
-			String sql = "select WVB_NUMBER , PARNT_URL , KEYWORDS ,DOMAIN, COMPANY_PERM_ID ,DATEWITHTITLE,CRAWLER ,WHENNOTFOUNDTITLE,CONTENTTYPE from PR_CONFIG where CONFIGER=1 and STATUS ='true' ORDER BY COMPANY_PERM_ID DESC  ";
+			String sql = "select WVB_NUMBER , PARNT_URL , KEYWORDS ,DOMAIN, COMPANY_PERM_ID ,DATEWITHTITLE,CRAWLER ,WHENNOTFOUNDTITLE,CONTENTTYPE from PR_CONFIG where CONFIGER=1 and STATUS ='true' ORDER BY COMPANY_PERM_ID ASC  ";
 			try {
 				if (con == null || con.isClosed()) {
 					con = ConnectionManager.connectDataBase();

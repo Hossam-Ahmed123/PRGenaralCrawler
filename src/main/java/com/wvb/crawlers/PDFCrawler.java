@@ -256,8 +256,8 @@ public class PDFCrawler implements ParentCrawler {
 		int second = calendar.get(Calendar.SECOND);
 		int mSecond = calendar.get(Calendar.MILLISECOND);
 
-		String fullDateTime = year + "\\" + month + "\\" + day + "\\" + hour
-				+ "\\" + minute + "\\" + second + "\\" + mSecond;
+		String fullDateTime = year + "/" + month + "/" + day + "/" + hour
+				+ "/" + minute + "/" + second + "/" + mSecond;
 
 		return fullDateTime;
 	}
@@ -320,56 +320,61 @@ public class PDFCrawler implements ParentCrawler {
 		String content = "";
 		String title = "";
 		String fixarr[] = new String[2];
-		try (PDDocument document = PDDocument.load(new File(path))) {
+		try {
+			try (PDDocument document = PDDocument.load(new File(path))) {
 
-			document.getClass();
+				document.getClass();
 
-			if (!document.isEncrypted()) {
+				if (!document.isEncrypted()) {
 
-				PDFTextStripperByArea stripper = new PDFTextStripperByArea();
-				stripper.setSortByPosition(true);
+					PDFTextStripperByArea stripper = new PDFTextStripperByArea();
+					stripper.setSortByPosition(true);
 
-				PDFTextStripper tStripper = new PDFTextStripper();
+					PDFTextStripper tStripper = new PDFTextStripper();
 
-				String pdfFileInText = tStripper.getText(document);
-				// System.out.println("Text:" + st);
+					String pdfFileInText = tStripper.getText(document);
+					// System.out.println("Text:" + st);
 
-				// split by whitespace
-				String lines[] = pdfFileInText.split("\\r?\\n");
-				int x = 0;
-				System.out.println(
-						"lines  =======================> " + lines.length);
-				// try {
-				// title = lines[0] + " " + lines[1];
-				// } catch (Exception e) {
-				// // TODO: handle exception
-				// }
+					// split by whitespace
+					String lines[] = pdfFileInText.split("\\r?\\n");
+					int x = 0;
+					System.out.println(
+							"lines  =======================> " + lines.length);
+					// try {
+					// title = lines[0] + " " + lines[1];
+					// } catch (Exception e) {
+					// // TODO: handle exception
+					// }
 
-				System.out.println("Title =======================> " + title);
-				for (String line : lines) {
+					System.out.println("Title =======================> " + title);
+					for (String line : lines) {
 
-					if (x == 3) {
+						if (x == 3) {
 
-						title = buffer.toString();
+							title = buffer.toString();
+							x++;
+						}
+
+						buffer.append(line);
+						System.out.println(line);
 						x++;
 					}
-
-					buffer.append(line);
-					System.out.println(line);
-					x++;
+					content = buffer.toString();
 				}
-				content = buffer.toString();
+				fixarr[0] = content;
+				fixarr[1] = title;
+			} catch (InvalidPasswordException e) {
+				// TODO Auto-generated catch block
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+
 			}
-			fixarr[0] = content;
-			fixarr[1] = title;
-		} catch (InvalidPasswordException e) {
-			// TODO Auto-generated catch block
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-
+		
 		return fixarr;
 
 	}
@@ -412,8 +417,7 @@ public class PDFCrawler implements ParentCrawler {
 	public void crawleBySelenium(String url, String companyCode,
 			int companyPermId, String keyWord, String domainFromDB,
 			String dateWithTitle, String titleFromChildPage) {
-		System.setProperty("webdriver.chrome.driver",
-				"E:\\lib\\chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "/home/user/Downloads/chromedriver");
 		WebDriver driver = new ChromeDriver();
 		Map<String, String> numberMapping = new HashMap<>();
 		modelSelenium = new ArrayList<DataModel>();

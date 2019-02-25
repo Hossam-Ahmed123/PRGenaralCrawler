@@ -74,7 +74,7 @@ public class ConnectionManager {
 	}
 
 	public static String SavePath() {
-		return "E:\\pdfs\\";
+		return "/home/user/pdfs/";
 	}
 
 	public static String GetDriverPath() {

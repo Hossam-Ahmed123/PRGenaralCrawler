@@ -35,8 +35,7 @@ public class HTMLCrawler implements ParentCrawler {
 	public void crawleBySelenium(String url, String companyCode,
 			int companyPermId, String keyWord, String domainFromDB,
 			String dateWithTitle, String titleFromChildPage) {
-		System.setProperty("webdriver.chrome.driver",
-				"E:\\lib\\chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "/home/user/Downloads/chromedriver");
 		WebDriver driver = new ChromeDriver();
 		Map<String, String> numberMapping = new HashMap<>();
 		modelSelenium = new ArrayList<DataModel>();
@@ -125,8 +124,7 @@ public class HTMLCrawler implements ParentCrawler {
 	private void getDataSelenium(String companyCode, String parentUrl,
 			int companyPermId, String dateWithTitle, int companyID,
 			Map<String, String> numberMapping, String titleFromChildPage) {
-		System.setProperty("webdriver.chrome.driver",
-				"E:\\lib\\chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "/home/user/Downloads/chromedriver");
 		WebDriver driverx = new ChromeDriver();
 		Iterator iterator = numberMapping.entrySet().iterator();
 		String date = "";
@@ -216,7 +214,8 @@ public class HTMLCrawler implements ParentCrawler {
 
 			GetDocumentJsoup gdj = new GetDocumentJsoup();
 			Document document = gdj.getDocument(url);
-			System.out.println(document.outerHtml());
+			
+			
 			String domain = uri.getHost();
 			logger.info("URI -----|> " + uri);
 			// Element cls = document.getElementsByClass(configClass).first();
